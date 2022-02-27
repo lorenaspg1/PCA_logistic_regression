@@ -94,10 +94,10 @@ preprocessor = ColumnTransformer([
 
 df_prepro = preprocessor.fit_transform(X)
 
-names_columns_preprocessor = preprocessor.get_feature_names_out()  # los nomber de las columnas una vez se han cambiado en el preprocessor (ya no son las columnas de X)
+names_columns_preprocessor = preprocessor.get_feature_names_out()  # Column's names already changed in preprocessor step(they aren't X columns anymore)
 
 df_scaled_named = pd.DataFrame(data=df_prepro,
-                               columns=names_columns_preprocessor)  #### DATAFRAME CON LOS VALORES ESCALADOS Y TRANSFORMADOS  y con los nombres de las columnas nuevas (no las de X, sino las trasformadas)
+                               columns=names_columns_preprocessor)  # Df with scaled and transformed values + new transformed columns names
 
 ### ADECUACCY TEST FOR PCA ###
 
