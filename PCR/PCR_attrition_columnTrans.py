@@ -1,7 +1,6 @@
 # Data cleaning and preparation
 # ==============================================================================
 import multiprocessing
-
 import numpy as np
 import pandas as pd
 
@@ -196,7 +195,7 @@ grid = GridSearchCV(
     param_grid=param_grid,
     scoring='neg_root_mean_squared_error',
     n_jobs=multiprocessing.cpu_count() - 1,
-    cv=KFold(n_splits=5, random_state=123, shuffle=True),
+    cv=KFold(n_splits=10, random_state=123, shuffle=True),
     refit=True,
     verbose=0,
     return_train_score=True)
