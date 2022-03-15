@@ -1,6 +1,7 @@
 # Data cleaning and preparation
 # ==============================================================================
 import multiprocessing
+
 import numpy as np
 import pandas as pd
 
@@ -27,7 +28,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import KFold
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 from sklearn.preprocessing import StandardScaler
 
 # Warnings configuration
@@ -38,8 +39,7 @@ style.use('ggplot') or plt.style.use('ggplot')
 # ==============================================================================
 data = None
 try:
-    data = pd.read_csv(
-        'file:/Users/lorena/Public/knime-workspace/Datos%20para%20pra%CC%81cticas/Estadistica%20Bloque%20I/WA_Fn-UseC_-HR-Employee-Attrition.csv')
+    data = pd.read_csv('/Users/lorena/Git/PCA/WA_Fn-UseC_-HR-Employee-Attrition.csv')
 except IOError:
     print("Cannot open the csv file")
 
@@ -53,19 +53,21 @@ df = data.drop(columns=['Over18', 'EmployeeNumber', 'EmployeeCount', 'StandardHo
 
 X = df.drop(columns='Attrition')
 
+label = LabelEncoder()
+y = label.fit_transform(df['Attrition'])
+# def parse_string_column_to_numeric(dataframe, column_name: str):
+#     df_dummy = pd.get_dummies(dataframe['{}'.format(column_name)])
+#
+#     first_column_name = df_dummy.columns[0]
+#     df_dummy.rename(columns={'{}'.format(first_column_name): '{}'.format(column_name)}, inplace=True)
+#
+#     second_column_name = df_dummy.columns[1]
+#     df_dummy.drop(columns={'{}'.format(second_column_name)}, inplace=True)
+#     return df_dummy.values.ravel()
+#
+#
+# y = parse_string_column_to_numeric(df, 'Attrition')
 
-def parse_string_column_to_numeric(dataframe, column_name: str):
-    df_dummy = pd.get_dummies(dataframe['{}'.format(column_name)])
-
-    first_column_name = df_dummy.columns[0]
-    df_dummy.rename(columns={'{}'.format(first_column_name): '{}'.format(column_name)}, inplace=True)
-
-    second_column_name = df_dummy.columns[1]
-    df_dummy.drop(columns={'{}'.format(second_column_name)}, inplace=True)
-    return df_dummy.values.ravel()
-
-
-y = parse_string_column_to_numeric(df, 'Attrition')
 
 # 2. Select categorical columns (strings) and numerical columns(int, floats)
 # ==============================================================================
@@ -283,7 +285,7 @@ predictions_24 = predictions_24.flatten()
 rmse_pcr = mean_squared_error(y_true=y_test, y_pred=predictions_24, squared=False)
 print(f'RMSE for 24 components is:{rmse_pcr}')
 
-### INTERPRETACION ###
+### INTERPRETATION ###
 # ==============================================================================
 
 # 1. Transforming array to DF adding names to axis
@@ -309,9 +311,9 @@ plt.show()
 # 3. Final interpretation
 # ==============================================================================
 
-## The analysis indicates our variables are not highly correlated from the beginninh, it means our PCR analysis don't show good results(i.e: RMSE increase after PCR) Even KMO test showed we shouldn't proceed with  PCA analysis because it's bad)
+## The analysis indicates our variables are not highly correlated from the beginning, it means our PCR analysis don't show good results(i.e: RMSE increase after PCR) Even KMO test showed we shouldn't proceed with  PCA analysis because it's bad)
 ## Describing some components from de PCA:
-# PC1 combinations :JobLevel, Yearsatcompnay, Totalworkingyears
+# PC1 combinations :JobLevel, Years At company, Total working years
 # PC2: Age and Number of companies worked
 # PC3: Salary hike and Performance rating
 # PC4: Stock options level
